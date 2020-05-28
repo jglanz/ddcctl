@@ -11,6 +11,7 @@
 #include <ApplicationServices/ApplicationServices.h>
 #include "DDC.h"
 
+
 #ifndef kMaxRequests
 #define kMaxRequests 10
 #endif
@@ -24,6 +25,7 @@ _Static_assert (0, "must build with `make (amd|intel|nvidia)`");
 #define kIOFBDependentIDKey	"IOFBDependentID"
 #define kIOFBDependentIndexKey	"IOFBDependentIndex"
 #endif
+
 
 /*
 
@@ -120,12 +122,12 @@ static io_service_t IOFramebufferPortFromCGDisplayID(CGDirectDisplayID displayID
     return servicePort;
 }
 
-dispatch_semaphore_t DisplayQueue(CGDirectDisplayID displayID) {
+static dispatch_semaphore_t DisplayQueue(CGDirectDisplayID displayID) {
     static UInt64 queueCount = 0;
     static struct DDCQueue {CGDirectDisplayID id; dispatch_semaphore_t queue;} *queues = NULL;
     dispatch_semaphore_t queue = NULL;
     if (!queues)
-        queues = calloc(50, sizeof(*queues)); //FIXME: specify
+        queues = static_cast<struct DDCQueue *>(calloc(50, sizeof(*queues))); //FIXME: specify
     UInt64 i = 0;
     while (i < queueCount)
         if (queues[i].id == displayID)
@@ -139,7 +141,7 @@ dispatch_semaphore_t DisplayQueue(CGDirectDisplayID displayID) {
     return queue;
 }
 
-bool DisplayRequest(CGDirectDisplayID displayID, IOI2CRequest *request) {
+static bool DisplayRequest(CGDirectDisplayID displayID, IOI2CRequest *request) {
     dispatch_semaphore_t queue = DisplayQueue(displayID);
     dispatch_semaphore_wait(queue, DISPATCH_TIME_FOREVER);
     bool result = false;
@@ -171,18 +173,22 @@ bool DisplayRequest(CGDirectDisplayID displayID, IOI2CRequest *request) {
     return result && request->result == KERN_SUCCESS;
 }
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 bool DDCWrite(CGDirectDisplayID displayID, struct DDCWriteCommand *write) {
-    IOI2CRequest    request;
-    UInt8           data[128];
+    IOI2CRequest request;
+    UInt8 data[128];
 
-    bzero( &request, sizeof(request));
+    bzero(&request, sizeof(request));
 
-    request.commFlags                       = 0;
+    request.commFlags = 0;
 
-    request.sendAddress                     = 0x6E;
-    request.sendTransactionType             = kIOI2CSimpleTransactionType;
-    request.sendBuffer                      = (vm_address_t) &data[0];
-    request.sendBytes                       = 7;
+    request.sendAddress = 0x6E;
+    request.sendTransactionType = kIOI2CSimpleTransactionType;
+    request.sendBuffer = (vm_address_t) &data[0];
+    request.sendBytes = 7;
 
     data[0] = 0x51;
     data[1] = 0x84;
@@ -190,10 +196,10 @@ bool DDCWrite(CGDirectDisplayID displayID, struct DDCWriteCommand *write) {
     data[3] = write->control_id;
     data[4] = (write->new_value) >> 8;
     data[5] = write->new_value & 255;
-    data[6] = 0x6E ^ data[0] ^ data[1] ^ data[2] ^ data[3]^ data[4] ^ data[5];
+    data[6] = 0x6E ^ data[0] ^ data[1] ^ data[2] ^ data[3] ^ data[4] ^ data[5];
 
-    request.replyTransactionType            = kIOI2CNoTransactionType;
-    request.replyBytes                      = 0;
+    request.replyTransactionType = kIOI2CNoTransactionType;
+    request.replyBytes = 0;
 
     bool result = DisplayRequest(displayID, &request);
     return result;
@@ -205,21 +211,21 @@ bool DDCRead(CGDirectDisplayID displayID, struct DDCReadCommand *read) {
     bool result = false;
     UInt8 data[128];
 
-    for (int i=1; i<=kMaxRequests; i++) {
+    for (int i = 1; i <= kMaxRequests; i++) {
         bzero(&request, sizeof(request));
 
-        request.commFlags                       = 0;
-        request.sendAddress                     = 0x6E;
-        request.sendTransactionType             = kIOI2CSimpleTransactionType;
-        request.sendBuffer                      = (vm_address_t) &data[0];
-        request.sendBytes                       = 5;
+        request.commFlags = 0;
+        request.sendAddress = 0x6E;
+        request.sendTransactionType = kIOI2CSimpleTransactionType;
+        request.sendBuffer = (vm_address_t) &data[0];
+        request.sendBytes = 5;
         // Certain displays / graphics cards require a long-enough delay to give a response.
         // Relying on retry will not help if the delay is too short.
-        request.minReplyDelay                   = kDDCMinReplyDelay * kNanosecondScale;
-		// FIXME: this should be tuneable at runtime
-		// https://github.com/kfix/ddcctl/issues/57
-		// incorrect values for GPU-vendor can cause kernel panic
-		// https://developer.apple.com/documentation/iokit/ioi2crequest/1410394-minreplydelay?language=objc
+        request.minReplyDelay = kDDCMinReplyDelay * kNanosecondScale;
+        // FIXME: this should be tuneable at runtime
+        // https://github.com/kfix/ddcctl/issues/57
+        // incorrect values for GPU-vendor can cause kernel panic
+        // https://developer.apple.com/documentation/iokit/ioi2crequest/1410394-minreplydelay?language=objc
 
         data[0] = 0x51;
         data[1] = 0x82;
@@ -231,16 +237,20 @@ bool DDCRead(CGDirectDisplayID displayID, struct DDCReadCommand *read) {
 #elif defined TT_DDC
         request.replyTransactionType    = kIOI2CDDCciReplyTransactionType;
 #else
-        request.replyTransactionType    = SupportedTransactionType();
+        request.replyTransactionType = SupportedTransactionType();
 #endif
-        request.replyAddress            = 0x6F;
-        request.replySubAddress         = 0x51;
+        request.replyAddress = 0x6F;
+        request.replySubAddress = 0x51;
 
         request.replyBuffer = (vm_address_t) reply_data;
         request.replyBytes = sizeof(reply_data);
 
         result = DisplayRequest(displayID, &request);
-        result = (result && reply_data[0] == request.sendAddress && reply_data[2] == 0x2 && reply_data[4] == read->control_id && reply_data[10] == (request.replyAddress ^ request.replySubAddress ^ reply_data[1] ^ reply_data[2] ^ reply_data[3] ^ reply_data[4] ^ reply_data[5] ^ reply_data[6] ^ reply_data[7] ^ reply_data[8] ^ reply_data[9]));
+        result = (result && reply_data[0] == request.sendAddress && reply_data[2] == 0x2 &&
+                  reply_data[4] == read->control_id && reply_data[10] ==
+                                                       (request.replyAddress ^ request.replySubAddress ^ reply_data[1] ^
+                                                        reply_data[2] ^ reply_data[3] ^ reply_data[4] ^ reply_data[5] ^
+                                                        reply_data[6] ^ reply_data[7] ^ reply_data[8] ^ reply_data[9]));
 
         if (result) { // checksum is ok
             if (i > 1) {
@@ -270,16 +280,16 @@ bool DDCRead(CGDirectDisplayID displayID, struct DDCReadCommand *read) {
 }
 
 UInt32 SupportedTransactionType() {
-   /*
-     With my setup (Intel HD4600 via displaylink to 'DELL U2515H') the original app failed to read ddc and freezes my system.
-     This happens because AppleIntelFramebuffer do not support kIOI2CDDCciReplyTransactionType.
-     So this version comes with a reworked ddc read function to detect the correct TransactionType.
-     --SamanVDR 2016
-   */
+    /*
+      With my setup (Intel HD4600 via displaylink to 'DELL U2515H') the original app failed to read ddc and freezes my system.
+      This happens because AppleIntelFramebuffer do not support kIOI2CDDCciReplyTransactionType.
+      So this version comes with a reworked ddc read function to detect the correct TransactionType.
+      --SamanVDR 2016
+    */
 
-    kern_return_t   kr;
-    io_iterator_t   io_objects;
-    io_service_t    io_service;
+    kern_return_t kr;
+    io_iterator_t io_objects;
+    io_service_t io_service;
 
     kr = IOServiceGetMatchingServices(kIOMasterPortDefault,
                                       IOServiceNameMatching("IOFramebufferI2CInterface"), &io_objects);
@@ -291,16 +301,15 @@ UInt32 SupportedTransactionType() {
 
     UInt32 supportedType = 0;
 
-    while((io_service = IOIteratorNext(io_objects)) != MACH_PORT_NULL)
-    {
+    while ((io_service = IOIteratorNext(io_objects)) != MACH_PORT_NULL) {
         CFMutableDictionaryRef service_properties;
         CFIndex types = 0;
         CFNumberRef typesRef;
 
         kr = IORegistryEntryCreateCFProperties(io_service, &service_properties, kCFAllocatorDefault, kNilOptions);
-        if (kr == KERN_SUCCESS)
-        {
-            if (CFDictionaryGetValueIfPresent(service_properties, CFSTR(kIOI2CTransactionTypesKey), (const void**)&typesRef))
+        if (kr == KERN_SUCCESS) {
+            if (CFDictionaryGetValueIfPresent(service_properties, CFSTR(kIOI2CTransactionTypesKey),
+                                              (const void **) &typesRef))
                 CFNumberGetValue(typesRef, kCFNumberCFIndexType, &types);
 
             /*
@@ -354,12 +363,12 @@ UInt32 SupportedTransactionType() {
                 }
 #else
                 // kIOI2CSimpleTransactionType = 1
-                if ( 0 != ((1 << kIOI2CSimpleTransactionType) & (UInt64)types)) {
+                if (0 != ((1 << kIOI2CSimpleTransactionType) & (UInt64) types)) {
                     supportedType = kIOI2CSimpleTransactionType;
                 }
 
                 // kIOI2CDDCciReplyTransactionType = 2
-                if ( 0 != ((1 << kIOI2CDDCciReplyTransactionType) & (UInt64)types)) {
+                if (0 != ((1 << kIOI2CDDCciReplyTransactionType) & (UInt64) types)) {
                     supportedType = kIOI2CDDCciReplyTransactionType;
                 }
 #endif
@@ -436,3 +445,6 @@ bool EDIDTest(CGDirectDisplayID displayID, struct EDID *edid) {
     }
     return !sum;
 }
+#if defined(__cplusplus)
+}
+#endif

@@ -91,7 +91,7 @@ void setControl(CGDirectDisplayID cdisplay, uint control_id, uint new_value) {
 }
 
 /* Get current value to Set relative value for control from display */
-void getSetControl(CGDirectDisplayID cdisplay, uint control_id, NSString *new_value, NSString *operator) {
+void getSetControl(CGDirectDisplayID cdisplay, uint control_id, NSString *new_value, NSString *op) {
     struct DDCReadCommand command;
     command.control_id = control_id;
     command.max_value = 0;
@@ -110,7 +110,7 @@ void getSetControl(CGDirectDisplayID cdisplay, uint control_id, NSString *new_va
     }
 
     // calculate
-    NSString *formula = [NSString stringWithFormat:@"%u %@ %@", command.current_value, operator, new_value];
+    NSString *formula = [NSString stringWithFormat:@"%u %@ %@", command.current_value, op, new_value];
     NSExpression *exp = [NSExpression expressionWithFormat:formula];
     NSNumber *set_value = [exp expressionValueWithObject:nil context:nil];
 
