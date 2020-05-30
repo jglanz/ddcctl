@@ -18,11 +18,14 @@ using DDCAction = std::pair<int,int>;
 using Display = DisplayInfo;
 using Displays = vector<Display>;
 
+/**
+ * Execute a ddc action
+ * on a `std::vector<DisplayInfo>`
+ *
+ * @param displays
+ * @param action
+ */
 static void executeDDCAction(const Displays & displays, const DDCAction & action) {
-
-//    command.control_id = static_cast<UInt8>(action.first);
-//    command.new_value = static_cast<UInt8>(action.second);
-
 
     for (const auto & display : displays) {
       struct DDCWriteCommand command {
@@ -46,9 +49,10 @@ int main(int argc, char **argv) {
 
   cxxopts::Options options("ddcctl", "DDC/CI Monitor Control");
   options.add_options("common")
-    ("d,display", "Display number", cxxopts::value<int>()->default_value("-1"))
-    ("b,brightness", "Display number", cxxopts::value<int>());
+    ("d," DISPLAY_OPT, "Display number", cxxopts::value<int>()->default_value("-1"))
+    ("b," BRIGHTNESS_OPT, "Display number", cxxopts::value<int>());
 
+  options.help();
   auto opts = options.parse(argc, argv);
 
   auto index = opts["display"].as<int>();
