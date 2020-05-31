@@ -64,7 +64,9 @@ std::vector<DisplayInfo> getDisplays();
 extern "C" {
 #endif
 
-
+#define DISPLAY_OPT "display"
+#define BRIGHTNESS_OPT "brightness"
+#define CONTRAST_OPT "contrast"
 
 #define RESET 0x04
 #define RESET_BRIGHTNESS_AND_CONTRAST 0x05
