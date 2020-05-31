@@ -1,5 +1,0 @@
-/projects/macos/ddcctl/build/debug-xcode/CMakeFiles/ddcctl.dir
-/projects/macos/ddcctl/build/debug-xcode/CMakeFiles/DDCFramework.dir
-/projects/macos/ddcctl/build/debug-xcode/CMakeFiles/ddc.dir
-/projects/macos/ddcctl/build/debug-xcode/CMakeFiles/ALL_BUILD.dir
-/projects/macos/ddcctl/build/debug-xcode/CMakeFiles/ZERO_CHECK.dir

@@ -1,3 +1,0 @@
-/projects/macos/ddcctl/build/debug/_deps/cmodule-subbuild/CMakeFiles/rebuild_cache.dir
-/projects/macos/ddcctl/build/debug/_deps/cmodule-subbuild/CMakeFiles/edit_cache.dir
-/projects/macos/ddcctl/build/debug/_deps/cmodule-subbuild/CMakeFiles/cmodule-populate.dir

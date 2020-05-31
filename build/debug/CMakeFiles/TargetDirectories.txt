@@ -1,5 +1,0 @@
-/projects/macos/ddcctl/build/debug/CMakeFiles/ddcctl.dir
-/projects/macos/ddcctl/build/debug/CMakeFiles/DDCFramework.dir
-/projects/macos/ddcctl/build/debug/CMakeFiles/rebuild_cache.dir
-/projects/macos/ddcctl/build/debug/CMakeFiles/edit_cache.dir
-/projects/macos/ddcctl/build/debug/CMakeFiles/ddc.dir
