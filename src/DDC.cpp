@@ -378,20 +378,21 @@ bool DDCWrite(const DisplayInfo &display, struct DDCWriteCommand *write) {
 
 bool DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
 
-  UInt8 reply_data[11] = {};
-  bool result = false;
-  UInt8 data[128];
+
   bool executed = false;
 
   auto callback = [&](const DisplayInfo &it, io_service_t port) -> bool {
     if (it.index == display.index) {
-
+      UInt8 reply_data[11] = {};
+      bool result = false;
+      UInt8 data[128];
 
       for (int i = 1; i <= kMaxRequests; i++) {
 //    bzero(&request, sizeof(request));
         IOI2CRequest request{
           .sendTransactionType = kIOI2CSimpleTransactionType,
-          .replyTransactionType = SupportedTransactionType(),
+          .replyTransactionType = kIOI2CDDCciReplyTransactionType,
+          //.replyTransactionType = SupportedTransactionType(),
           .sendAddress = 0x6e,
           .replyAddress = 0x6F,
           .replySubAddress = 0x51,

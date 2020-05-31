@@ -67,6 +67,7 @@ extern "C" {
 #define DISPLAY_OPT "display"
 #define BRIGHTNESS_OPT "brightness"
 #define CONTRAST_OPT "contrast"
+#define INPUT_SOURCE_OPT "source"
 
 #define RESET 0x04
 #define RESET_BRIGHTNESS_AND_CONTRAST 0x05

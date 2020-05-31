@@ -8,12 +8,12 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 set(CMAKE_FIND_FRAMEWORK FIRST)
 
-add_definitions("-std=c++${CXX_STANDARD}")
+add_definitions("-std=stdc++${CXX_STANDARD}")
 
 if(NOT EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
   execute_process(
     COMMAND
-    conan install ${CMAKE_SOURCE_DIR}_DIR}
+    conan install ${CMAKE_CURRENT_LIST_DIR}
     WORKING_DIRECTORY
     ${CMAKE_BINARY_DIR}
   )
