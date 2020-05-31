@@ -9,6 +9,7 @@
 
 
 using std::pair;
+using std::function;
 using std::make_pair;
 using std::vector;
 using std::string;
@@ -38,10 +39,24 @@ static void executeDDCAction(const Displays & displays, const DDCAction & action
     }
 }
 
+using Actions = vector<DDCAction>;
+
+using ActionHandler = function<void (const Actions&, const cxxopts::Options&)>;
+
+static ActionHandler createValueHandler(const std::string_view name, UInt8 code) {
+  return ([name,code] (const Actions& actions, const cxxopts::Options& opts) -> void {
+
+  });
+}
+
+
 int main(int argc, char **argv) {
   auto allDisplays = getDisplays();
   auto displays = getDisplays();
 
+  vector<ActionHandler> handlers {
+    createValueHandler(BRIGHTNESS_OPT, BRIGHTNESS)
+  };
   vector<DDCAction> actions;
 
   cxxopts::Options options("ddcctl", "DDC/CI Monitor Control");

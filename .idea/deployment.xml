@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData">
+  <component name="PublishConfigData" autoUpload="Always" serverName="mac-virt (99a8f803-f0d0-46ad-ab27-40ada6e9589d)" stopOnFirstError="true" deleteMissingItems="true" createEmptyFolders="true" preserveFilePermissions="true" autoUploadExternalChanges="true">
     <serverData>
       <paths name="mac-virt (99a8f803-f0d0-46ad-ab27-40ada6e9589d)">
         <serverdata>
           <mappings>
-            <mapping deploy="/var/folders/vz/h9sm5f3d14lg_qfc1bybksvr0000gn/T/tmp.1F3qLWU8" local="$PROJECT_DIR$" />
+            <mapping deploy="/projects/oss/ddcctl-laptop" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-mac-virt" />
@@ -13,5 +13,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

@@ -10,6 +10,15 @@ set(CMAKE_FIND_FRAMEWORK FIRST)
 
 add_definitions("-std=c++${CXX_STANDARD}")
 
+if(NOT EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+  execute_process(
+    COMMAND
+    conan install ${CMAKE_SOURCE_DIR}_DIR}
+    WORKING_DIRECTORY
+    ${CMAKE_BINARY_DIR}
+  )
+endif()
+
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
@@ -38,19 +47,10 @@ target_link_libraries(ddc "-framework CoreGraphics" "-framework IOKit" "-framewo
 
 get_target_property(ddc_LIB ddc OUTPUT_NAME)
 
-#add_executable(
-#  ${PROJECT_NAME}-old
-#  src/DDC.h
-#  src/ddcctl.mm
-#  src/DDC.cpp
-#)
-
-#target_link_libraries(${PROJECT_NAME}-old "-framework IOKit" "-framework AppKit" "-framework Foundation")
-
 add_executable(
   ${PROJECT_NAME}
   src/DDC.h
-  src/ddcctl-new.cpp
+  src/ddcctl.cpp
   src/DDC.cpp
 )
 
