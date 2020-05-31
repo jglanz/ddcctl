@@ -1,6 +1,6 @@
 
 
-#include "DDC.h"
+#include "DDC.hpp"
 #include <cxxopts.hpp>
 #include <algorithm>
 #include <map>
@@ -15,14 +15,16 @@ using std::vector;
 using std::string;
 using std::map;
 
+using namespace DDC;
+
 using DDCAction = std::pair<int, int>;
 using Display = DisplayInfo;
 using Displays = vector<Display>;
 
-enum Mode {
-  Read,
-  Write
-};
+//enum Mode {
+//  Read,
+//  Write
+//};
 
 /**
  * Execute a ddc action
@@ -31,40 +33,34 @@ enum Mode {
  * @param displays
  * @param action
  */
-static void executeDDCAction(const Mode mode, const Displays &displays, const DDCAction &action) {
+static void executeDDCAction(const Displays &displays, const DDCAction &action) {
 
   for (const auto &display : displays) {
-    switch(mode) {
-      case Mode::Read: {
-        struct DDCReadCommand command{
-          static_cast<UInt8>(action.first)
-        };
+    if (action.second == -1) {
+
+      struct DDCReadCommand command{
+        static_cast<UInt8>(action.first)
+      };
 
 
-
-        if (!DDCRead(display, &command)) {
-          printf("E: Failed to send DDC command!\n");
-        } else {
-          printf("D: getting VCP control #%u => %u,%u\n", command.controlId, command.currentValue, command.maxValue);
-        }
+      if (!DDCRead(display, &command)) {
+        printf("E: Failed to send DDC command!\n");
+      } else {
+        printf("D: getting VCP control #%u => %u,%u\n", command.controlId, command.currentValue,
+               command.maxValue);
       }
-        break;
-      case Mode::Write: {
-        struct DDCWriteCommand command{
-          static_cast<UInt8>(action.first),
-          static_cast<UInt8>(action.second)
-        };
+    } else {
+      struct DDCWriteCommand command{
+        static_cast<UInt8>(action.first),
+        static_cast<UInt8>(action.second)
+      };
 
-        printf("D: setting VCP control #%u => %u\n", command.control_id, command.new_value);
+      printf("D: setting VCP control #%u => %u\n", command.control_id, command.new_value);
 
-        if (!DDCWrite(display, &command)) {
-          printf("E: Failed to send DDC command!\n");
-        }
+      if (!DDCWrite(display, &command)) {
+        printf("E: Failed to send DDC command!\n");
       }
-        break;
     }
-
-
 
   }
 }
@@ -76,7 +72,13 @@ using ActionHandler = function<void(Actions &, const cxxopts::ParseResult &)>;
 static ActionHandler createValueHandler(const string name, UInt8 code) {
   return ([&name, code](Actions &actions, const cxxopts::ParseResult &opts) -> void {
     if (opts.count(name)) {
-      actions.emplace_back(code, opts[name].as<int>());
+      auto newValueStr = opts[name].as<string>();
+      if (newValueStr == "?") {
+        newValueStr = "-1";
+      }
+
+      int newValue = std::stoi(newValueStr);
+      actions.emplace_back(code, newValue);
     }
   });
 }
@@ -85,7 +87,7 @@ static ActionHandler createValueHandler(const string name, UInt8 code) {
 int main(int argc, char **argv) {
   auto allDisplays = getDisplays();
   auto displays = getDisplays();
-  auto mode = Mode::Read;
+
 
   vector<ActionHandler> handlers{
     createValueHandler(BRIGHTNESS_OPT, BRIGHTNESS),
@@ -97,39 +99,38 @@ int main(int argc, char **argv) {
   cxxopts::Options options("ddcctl", "DDC/CI Monitor Control");
   options.add_options("common")
     ("d," DISPLAY_OPT, "Display number", cxxopts::value<int>()->default_value("-1"))
-    ("b," BRIGHTNESS_OPT, "Display number", cxxopts::value<int>())
-    ("s," INPUT_SOURCE_OPT, "Input Source", cxxopts::value<int>()->default_value("-1"))
-    ("w,write", "Write Mode", cxxopts::value<bool>()->default_value("false"));
+    (CONTRAST_OPT, "Contrast", cxxopts::value<string>()->implicit_value("-1"))
+    (BRIGHTNESS_OPT, "Brightness", cxxopts::value<string>()->implicit_value("-1"))
+    (INPUT_SOURCE_OPT, "Input Source", cxxopts::value<string>()->implicit_value("-1"))
+    ("h,help", "Print usage");
+//    ("w,write", "Write Mode", cxxopts::value<bool>()->default_value("false"));
 
-  options.help();
+//  options.help();
   auto opts = options.parse(argc, argv);
 
-  if (opts["write"].as<bool>()) {
-    mode = Mode::Write;
+  if (opts.count("help")) {
+    std::cout << options.help() << std::endl;
+    exit(0);
   }
 
-  auto index = opts[DISPLAY_OPT].as<int>();
-  if (index > -1) {
-    displays.clear();
-    displays.push_back(allDisplays[index]);
+  if (opts.count(DISPLAY_OPT)) {
+    auto index = opts[DISPLAY_OPT].as<int>();
+    if (index > -1) {
+      displays.clear();
+      displays.push_back(allDisplays[index]);
+    }
   }
 
-  for (auto & handler : handlers) {
-    handler(actions,opts);
+  for (auto &handler : handlers) {
+    handler(actions, opts);
   }
-//  if (opts.count(BRIGHTNESS_OPT)) {
-//    actions.emplace_back(BRIGHTNESS, opts[BRIGHTNESS_OPT].as<int>());
-////    auto brightness = ;
-//
-//  }
+
   for (const auto &info : displays) {
     printf("Screen #%u: %s\n", info.index, info.name.data());
-
-
   }
 
   for (const auto &action : actions) {
-    executeDDCAction(mode, displays, action);
+    executeDDCAction(displays, action);
   }
 
 

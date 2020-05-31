@@ -1,0 +1,38 @@
+conan install /projects/macos/ddcctl -if=/projects/macos/ddcctl/build/debug -pr=default
+Configuration:
+[settings]
+arch=x86_64
+arch_build=x86_64
+build_type=Release
+compiler=apple-clang
+compiler.cppstd=11
+compiler.libcxx=libstdc++
+compiler.version=11.0
+os=Macos
+os_build=Macos
+[options]
+[build_requires]
+[env]
+
+conanfile.txt: Installing package
+Requirements
+    cxxopts/2.2.0 from 'conan-center' - Cache
+Packages
+    cxxopts/2.2.0:5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9 - Cache
+
+Installing (downloading, building) binaries...
+cxxopts/2.2.0: Already installed!
+conanfile.txt: Generator cmake created conanbuildinfo.cmake
+conanfile.txt: Generator txt created conanbuildinfo.txt
+conanfile.txt: Generated conaninfo.txt
+conanfile.txt: Generated graphinfo
+/usr/local/Cellar/cmake/3.17.2/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /projects/macos/ddcctl
+-- Conan: Adjusting output directories
+-- Conan: Using cmake global configuration
+-- Conan: Adjusting default RPATHs Conan policies
+-- Conan: Adjusting language standard
+-- Current conanbuildinfo.cmake directory: /projects/macos/ddcctl/build/debug
+-- FW path: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/IOKit.framework
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /projects/macos/ddcctl/build/debug

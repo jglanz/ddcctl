@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="scapix"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\build\;CMake Files\build\debug\;CMake Files\build\debug\_deps\;CMake Files\build\debug\_deps\cmodule-src\;CMake Files\build\debug\_deps\cmodule-src\cmake\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\Users\;CMake Files\..\..\..\Users\jglanz\;CMake Files\..\..\..\Users\jglanz\.cmodule\;CMake Files\..\..\..\Users\jglanz\.cmodule\scapix\;CMake Files\..\..\..\Users\jglanz\.cmodule\scapix\1.0.11\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="scapix">
+				<Option output="/projects/macos/ddcctl/build/debug/lib/libscapix.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSCAPIX_BRIDGE=objc"/>
+					<Add option="-DSCAPIX_BRIDGE_objc"/>
+					<Add option="-DSCAPIX_PLATFORM=macos"/>
+					<Add directory="/Users/jglanz/.conan/data/cxxopts/2.2.0/_/_/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include"/>
+					<Add directory="/Users/jglanz/.cmodule/scapix/1.0.11/source"/>
+					<Add directory="/Users/jglanz/.cmodule/scapix/1.0.11/java_api/jdk-11.0.2"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 scapix"/>
+					<CompileFile command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="scapix/fast">
+				<Option output="/projects/macos/ddcctl/build/debug/lib/libscapix.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSCAPIX_BRIDGE=objc"/>
+					<Add option="-DSCAPIX_BRIDGE_objc"/>
+					<Add option="-DSCAPIX_PLATFORM=macos"/>
+					<Add directory="/Users/jglanz/.conan/data/cxxopts/2.2.0/_/_/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include"/>
+					<Add directory="/Users/jglanz/.cmodule/scapix/1.0.11/source"/>
+					<Add directory="/Users/jglanz/.cmodule/scapix/1.0.11/java_api/jdk-11.0.2"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 scapix/fast"/>
+					<CompileFile command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j32 -f &quot;/projects/macos/ddcctl/build/debug/_deps/scapix-1.0.11-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/com/scapix/Bridge.java">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/com/scapix/NativeException.java">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/experimental/type_traits">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/cpp/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/cs/Object.cs">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/cs/init.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/cs/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/java/init.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/java/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/js/init.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/js/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/objc/BridgeObject.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/objc/BridgeObject.mm">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/objc/BridgeObjectPrivate.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/objc/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/python/init.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/python/object.cpp">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/python/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/bridge/type_traits.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/config.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/core/cast.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/core/type_traits.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/java_api.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/API.cs">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/api.cpp">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/api.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/array.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/convert.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/exception.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/function.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/ref.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/ref_type.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/string.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/cs/type_traits.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/array.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/byte_buffer.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/class.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/convert.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/api.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/api/array.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/api/ref.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/api/string.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/api/type.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/config.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/env.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/exception.cpp">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/exception.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/native_exception.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/detail/util.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/function.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/local_frame.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/lock.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/monitor.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/native_method.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/object.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/object.ipp">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/object_base.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/ref.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/signature.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/string.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/thread.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/throwable.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/type_traits.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/vm.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/java/vm_exception.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/js/bind.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/js/convert.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/js/type_traits.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/link/objc/convert.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/Users/jglanz/.cmodule/scapix/1.0.11/source/scapix/meta/string.h">
+			<Option target="scapix"/>
+		</Unit>
+		<Unit filename="/projects/macos/ddcctl/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/projects/macos/ddcctl/build/debug/conanbuildinfo.cmake">
+			<Option virtualFolder="CMake Files\build\debug\"/>
+		</Unit>
+		<Unit filename="/projects/macos/ddcctl/build/debug/_deps/cmodule-src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\build\debug\_deps\cmodule-src\"/>
+		</Unit>
+		<Unit filename="/projects/macos/ddcctl/build/debug/_deps/cmodule-src/cmake/FindScapix.cmake">
+			<Option virtualFolder="CMake Files\build\debug\_deps\cmodule-src\cmake\"/>
+		</Unit>
+		<Unit filename="/projects/macos/ddcctl/build/debug/_deps/cmodule-src/cmake/FindScapixBin.cmake">
+			<Option virtualFolder="CMake Files\build\debug\_deps\cmodule-src\cmake\"/>
+		</Unit>
+		<Unit filename="/projects/macos/ddcctl/build/debug/_deps/cmodule-src/cmake/cmodule.cmake">
+			<Option virtualFolder="CMake Files\build\debug\_deps\cmodule-src\cmake\"/>
+		</Unit>
+		<Unit filename="/projects/macos/ddcctl/../../../Users/jglanz/.cmodule/scapix/1.0.11/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\..\..\..\Users\jglanz\.cmodule\scapix\1.0.11\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

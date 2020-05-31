@@ -11,7 +11,7 @@
 #include <utility>
 #include <map>
 
-#include "DDC.h"
+#include "DDC.hpp"
 //#include <IOKit/IOGraphicsLib.h>
 #include <ApplicationServices/ApplicationServices.h>
 
@@ -30,11 +30,13 @@ _Static_assert (0, "must build with `make (amd|intel|nvidia)`");
 #define kIOFBDependentIndexKey    "IOFBDependentIndex"
 #endif
 
+
 using std::map;
 using std::vector;
 using std::string;
+using namespace DDC;
 
-void forEachServicePort(const DisplayInfoCallback &callback) {
+void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
   io_iterator_t iter{0};
   io_service_t serv{0}, servicePort{0};
   UInt8 index{0};
@@ -79,7 +81,7 @@ void forEachServicePort(const DisplayInfoCallback &callback) {
 #endif
 
     auto productNameDict = static_cast<CFDictionaryRef>(CFDictionaryGetValue(info,
-                                                                                        CFSTR(kDisplayProductName)));
+                                                                             CFSTR(kDisplayProductName)));
     auto productNameRef = static_cast<CFStringRef>(CFDictionaryGetValue(productNameDict, CFSTR("en_US")));
     if (productNameRef) {
       productName = CFStringCreateCopy(NULL, productNameRef);
@@ -140,7 +142,7 @@ void forEachServicePort(const DisplayInfoCallback &callback) {
 }
 
 
-std::vector<DisplayInfo> getDisplays() {
+std::vector<DisplayInfo> DDC::getDisplays() {
   vector<DisplayInfo> displays;
 
   auto callback = [&displays](DisplayInfo info, io_service_t servicePort) -> bool {
@@ -155,7 +157,7 @@ std::vector<DisplayInfo> getDisplays() {
 }
 
 
-DisplayInfo::DisplayInfo(
+DDC::DisplayInfo::DisplayInfo(
   std::string name,
   UInt32 serial,
   UInt32 vendorId,
@@ -271,20 +273,11 @@ struct DDCQueue {
 
 static dispatch_semaphore_t DisplayQueue(const DisplayInfo &display) {
   static UInt64 queueCount = 0;
-  static map<int, DDCQueue> queues {};
-  dispatch_semaphore_t queue = NULL;
-//  if (!queues.count(display.index))
-//    queues.emplace(display.index, static_cast<struct DDCQueue *>(calloc(50, sizeof(*queues)))); //FIXME: specify
-//  UInt64 i = 0;
-//  while (i < queueCount) {
-//    if (queues[i].id == display.index)
-//      break;
-//    else
-//      i++;
-//  }
+  static map<int, DDCQueue> queues{};
+  dispatch_semaphore_t queue;
   if (queues.count(display.index)) {
     queue = queues[display.index].queue;
-  }else {
+  } else {
     queues[display.index] = {
       display.index,
       (queue = dispatch_semaphore_create(1))
@@ -293,7 +286,7 @@ static dispatch_semaphore_t DisplayQueue(const DisplayInfo &display) {
   return queue;
 }
 
-static bool DisplayRequest(const DisplayInfo &display, io_service_t framebuffer, IOI2CRequest *request) {
+static bool DisplayRequest(const DisplayInfo &display, io_service_t &frameBuffer, IOI2CRequest *request) {
   dispatch_semaphore_t queue = DisplayQueue(display);
   dispatch_semaphore_wait(queue, DISPATCH_TIME_FOREVER);
   bool result = false;
@@ -301,11 +294,11 @@ static bool DisplayRequest(const DisplayInfo &display, io_service_t framebuffer,
   //if ((framebuffer = CGDisplayIOServicePort(displayID))) { // Deprecated in OSX 10.9
 
   IOItemCount busCount;
-  if (IOFBGetI2CInterfaceCount(framebuffer, &busCount) == KERN_SUCCESS) {
+  if (IOFBGetI2CInterfaceCount(frameBuffer, &busCount) == KERN_SUCCESS) {
     IOOptionBits bus = 0;
     while (bus < busCount) {
       io_service_t interface;
-      if (IOFBCopyI2CInterfaceForBus(framebuffer, bus++, &interface) != KERN_SUCCESS)
+      if (IOFBCopyI2CInterfaceForBus(frameBuffer, bus++, &interface) != KERN_SUCCESS)
         continue;
 
       IOI2CConnectRef connect;
@@ -329,7 +322,7 @@ static bool DisplayRequest(const DisplayInfo &display, io_service_t framebuffer,
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
 
-bool DDCWrite(const DisplayInfo &display, struct DDCWriteCommand *write) {
+bool DDC::DDCWrite(const DisplayInfo &display, struct DDCWriteCommand *write) {
   //, io_service_t framebuffer
   bool executed = false;
   bool result = false;
@@ -376,7 +369,7 @@ bool DDCWrite(const DisplayInfo &display, struct DDCWriteCommand *write) {
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
 
-bool DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
+bool DDC::DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
 
 
   bool executed = false;
@@ -391,8 +384,8 @@ bool DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
 //    bzero(&request, sizeof(request));
         IOI2CRequest request{
           .sendTransactionType = kIOI2CSimpleTransactionType,
-          .replyTransactionType = kIOI2CDDCciReplyTransactionType,
-          //.replyTransactionType = SupportedTransactionType(),
+          //.replyTransactionType = kIOI2CDDCciReplyTransactionType,
+          .replyTransactionType = SupportedTransactionType(it, port),
           .sendAddress = 0x6e,
           .replyAddress = 0x6F,
           .replySubAddress = 0x51,
@@ -406,7 +399,7 @@ bool DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
 
         };
 
-        result = DisplayRequest(it, port, &request);
+        //result = DisplayRequest(it, port, &request);
 
 
 
@@ -444,9 +437,11 @@ bool DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
         result = DisplayRequest(display, port, &request);
         result = (result && reply_data[0] == request.sendAddress && reply_data[2] == 0x2 &&
                   reply_data[4] == read->controlId && reply_data[10] ==
-                                                      (request.replyAddress ^ request.replySubAddress ^ reply_data[1] ^
+                                                      (request.replyAddress ^ request.replySubAddress ^
+                                                       reply_data[1] ^
                                                        reply_data[2] ^ reply_data[3] ^ reply_data[4] ^ reply_data[5] ^
-                                                       reply_data[6] ^ reply_data[7] ^ reply_data[8] ^ reply_data[9]));
+                                                       reply_data[6] ^ reply_data[7] ^ reply_data[8] ^
+                                                       reply_data[9]));
 
         if (result) { // checksum is ok
           if (i > 1) {
@@ -489,7 +484,8 @@ bool DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
-UInt32 SupportedTransactionType() {
+
+UInt32 DDC::SupportedTransactionType(const DisplayInfo &it, io_service_t port) {
   /*
     With my setup (Intel HD4600 via displaylink to 'DELL U2515H') the original app failed to read ddc and freezes my system.
     This happens because AppleIntelFramebuffer do not support kIOI2CDDCciReplyTransactionType.
@@ -499,28 +495,33 @@ UInt32 SupportedTransactionType() {
 
   bool executed = false;
   kern_return_t kr;
-//  io_iterator_t io_objects;
-//  io_service_t io_service;
+  io_iterator_t io_objects;
+  io_service_t io_service;
 //
-//  kr = IOServiceGetMatchingServices(kIOMasterPortDefault,
-//                                    IOServiceNameMatching("IOFramebufferI2CInterface"), &io_objects);
+  kr = IOServiceGetMatchingServices(kIOMasterPortDefault,
+                                    IOServiceNameMatching("IOFramebufferI2CInterface"), &io_objects);
 //
-//  if (kr != KERN_SUCCESS) {
-//    printf("E: Fatal - No matching service! \n");
-//    return 0;
-//  }
+  if (kr != KERN_SUCCESS) {
+    printf("E: Fatal - No matching service! \n");
+    return 0;
+  }
 
   UInt32 supportedType = 0;
-  auto callback = [&](const DisplayInfo &it, io_service_t port) -> bool {
+  while ((io_service = IOIteratorNext(io_objects)) != MACH_PORT_NULL) {
     CFMutableDictionaryRef portProps;
     CFIndex types = 0;
     CFNumberRef typesRef;
 
-    kr = IORegistryEntryCreateCFProperties(port, &portProps, kCFAllocatorDefault, kNilOptions);
+    kr = IORegistryEntryCreateCFProperties(io_service, &portProps, kCFAllocatorDefault, kNilOptions);
     if (kr == KERN_SUCCESS) {
-      if (CFDictionaryGetValueIfPresent(portProps, CFSTR(kIOI2CTransactionTypesKey),
-                                        (const void **) &typesRef))
+      if (
+        CFDictionaryGetValueIfPresent(
+          portProps,
+          CFSTR(kIOI2CTransactionTypesKey),
+          (const void **) &typesRef)
+        ) {
         CFNumberGetValue(typesRef, kCFNumberCFIndexType, &types);
+      }
 
       /*
        We want DDCciReply but Simple is better than No-thing.
@@ -586,19 +587,24 @@ UInt32 SupportedTransactionType() {
 
       CFRelease(portProps);
     }
+    IOObjectRelease(io_service);
+    if (supportedType > 0)
+      return supportedType;
+  }
 
 //    IOObjectRelease(io_service);
-    return supportedType  < 1;
-  };
-
-  forEachServicePort(callback);
+//    return supportedType  < 1;
+//  };
+//
+//  forEachServicePort(callback);
 
   return supportedType;
 }
+
 #pragma clang diagnostic pop
 
 
-bool EDIDTest(const DisplayInfo & display, struct EDID *edid) {
+bool DDC::EDIDTest(const DisplayInfo &display, struct EDID *edid) {
 
 /*! from https://opensource.apple.com/source/IOGraphics/IOGraphics-513.1/IOGraphicsFamily/IOKit/i2c/IOI2CInterface.h.auto.html
  *  not in https://developer.apple.com/reference/kernel/1659924-ioi2cinterface.h/ioi2crequest?changes=latest_beta&language=objc
