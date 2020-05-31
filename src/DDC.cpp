@@ -20,10 +20,12 @@
 #define kMaxRequests 10
 #endif
 
-#ifndef kDDCMinReplyDelay
-// https://github.com/kfix/ddcctl/issues/57
-_Static_assert (0, "must build with `make (amd|intel|nvidia)`");
-#endif
+#define kDDCMinReplyDelay 300000
+//
+//#ifndef kDDCMinReplyDelay
+//// https://github.com/kfix/ddcctl/issues/57
+//_Static_assert (0, "must build with `make (amd|intel|nvidia)`");
+//#endif
 
 #ifndef _IOKIT_IOFRAMEBUFFER_H
 #define kIOFBDependentIDKey    "IOFBDependentID"
@@ -71,13 +73,13 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
 #ifdef DEBUG
     /* When assigning a display ID, Quartz considers the following parameters:Vendor, Model, Serial Number and Position in the I/O Kit registry */
     // http://opensource.apple.com//source/IOGraphics/IOGraphics-179.2/IOGraphicsFamily/IOKit/graphics/IOGraphicsTypes.h
-    CFStringRef locationRef = CFDictionaryGetValue(info, CFSTR(kIODisplayLocationKey));
-    if (locationRef) location = CFStringCreateCopy(NULL, locationRef);
-
-    if ((dependIDRef = CFDictionaryGetValue(info, CFSTR(kIOFBDependentIDKey))))
-        CFNumberGetValue(dependIDRef, kCFNumberCFIndexType, &dependID);
-    if ((dependIndexRef = CFDictionaryGetValue(info, CFSTR(kIOFBDependentIndexKey))))
-        CFNumberGetValue(dependIndexRef, kCFNumberCFIndexType, &dependIndex);
+//    CFStringRef locationRef = CFDictionaryGetValue(info, CFSTR(kIODisplayLocationKey));
+//    if (locationRef) location = CFStringCreateCopy(NULL, locationRef);
+//
+//    if ((dependIDRef = CFDictionaryGetValue(info, CFSTR(kIOFBDependentIDKey))))
+//        CFNumberGetValue(dependIDRef, kCFNumberCFIndexType, &dependID);
+//    if ((dependIndexRef = CFDictionaryGetValue(info, CFSTR(kIOFBDependentIndexKey))))
+//        CFNumberGetValue(dependIndexRef, kCFNumberCFIndexType, &dependIndex);
 #endif
 
     auto productNameDict = static_cast<CFDictionaryRef>(CFDictionaryGetValue(info,
@@ -118,13 +120,13 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
 #ifdef DEBUG
     // considering this IOFramebuffer as the match for the CGDisplay, dump out its information
     // compare with `make displaylist`
-    printf("\nFramebuffer: %s\n", name);
-    printf("%s\n", CFStringGetCStringPtr(location, kCFStringEncodingUTF8));
-    printf("VN:%ld PN:%ld SN:%ld", vendorID, productID, serialNumber);
-    printf(" UN:%d", CGDisplayUnitNumber(displayID));
-    printf(" IN:%d", iter);
-    printf(" depID:%ld depIdx:%ld", dependID, dependIndex);
-    printf(" Serial:%s\n\n", CFStringGetCStringPtr(serial, kCFStringEncodingUTF8));
+//    printf("\nFramebuffer: %s\n", name);
+//    printf("%s\n", CFStringGetCStringPtr(location, kCFStringEncodingUTF8));
+//    printf("VN:%ld PN:%ld SN:%ld", vendorID, productID, serialNumber);
+//    printf(" UN:%d", CGDisplayUnitNumber(displayID));
+//    printf(" IN:%d", iter);
+//    printf(" depID:%ld depIdx:%ld", dependID, dependIndex);
+//    printf(" Serial:%s\n\n", CFStringGetCStringPtr(serial, kCFStringEncodingUTF8));
 #endif
     servicePort = serv;
     CFRelease(info);
@@ -206,15 +208,15 @@ static io_service_t IOFrameBufferPortFromCGDisplayID(CGDirectDisplayID displayID
 #ifdef DEBUG
     /* When assigning a display ID, Quartz considers the following parameters:Vendor, Model, Serial Number and Position in the I/O Kit registry */
     // http://opensource.apple.com//source/IOGraphics/IOGraphics-179.2/IOGraphicsFamily/IOKit/graphics/IOGraphicsTypes.h
-    CFStringRef locationRef = CFDictionaryGetValue(info, CFSTR(kIODisplayLocationKey));
-    if (locationRef) location = CFStringCreateCopy(NULL, locationRef);
-    CFStringRef serialRef = CFDictionaryGetValue(info, CFSTR(kDisplaySerialString));
-    if (serialRef) serial = CFStringCreateCopy(NULL, serialRef);
-
-    if ((dependIDRef = CFDictionaryGetValue(info, CFSTR(kIOFBDependentIDKey))))
-        CFNumberGetValue(dependIDRef, kCFNumberCFIndexType, &dependID);
-    if ((dependIndexRef = CFDictionaryGetValue(info, CFSTR(kIOFBDependentIndexKey))))
-        CFNumberGetValue(dependIndexRef, kCFNumberCFIndexType, &dependIndex);
+//    CFStringRef locationRef = CFDictionaryGetValue(info, CFSTR(kIODisplayLocationKey));
+//    if (locationRef) location = CFStringCreateCopy(NULL, locationRef);
+//    CFStringRef serialRef = CFDictionaryGetValue(info, CFSTR(kDisplaySerialString));
+//    if (serialRef) serial = CFStringCreateCopy(NULL, serialRef);
+//
+//    if ((dependIDRef = CFDictionaryGetValue(info, CFSTR(kIOFBDependentIDKey))))
+//        CFNumberGetValue(dependIDRef, kCFNumberCFIndexType, &dependID);
+//    if ((dependIndexRef = CFDictionaryGetValue(info, CFSTR(kIOFBDependentIndexKey))))
+//        CFNumberGetValue(dependIndexRef, kCFNumberCFIndexType, &dependIndex);
 #endif
     if (CFDictionaryGetValueIfPresent(info, CFSTR(kDisplayVendorID), (const void **) &vendorIDRef))
       success = CFNumberGetValue(vendorIDRef, kCFNumberCFIndexType, &vendorID);

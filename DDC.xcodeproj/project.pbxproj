@@ -1,0 +1,359 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 53;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07F5AEF32484679700556DB9 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07F5AEF12484679700556DB9 /* CoreFoundation.framework */; };
+		07F5AEF42484679700556DB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07F5AEF22484679700556DB9 /* Foundation.framework */; };
+		07F5AEF6248467A200556DB9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07F5AEF5248467A200556DB9 /* CoreGraphics.framework */; };
+		07F5AEF8248467AC00556DB9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07F5AEF7248467AC00556DB9 /* IOKit.framework */; };
+		07F5AEFC2484683400556DB9 /* DDC.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F5AEFB2484683400556DB9 /* DDC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07F5AF072484690900556DB9 /* DDC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07F5AF052484690900556DB9 /* DDC.cpp */; };
+		07F5AF082484690900556DB9 /* DDCFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07F5AF062484690900556DB9 /* DDCFramework.mm */; };
+		07F5AF0B2484692F00556DB9 /* DDCFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F5AF092484692F00556DB9 /* DDCFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07F5AF0C2484692F00556DB9 /* DDC.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 07F5AF0A2484692F00556DB9 /* DDC.hpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		07F5AEE2248465C100556DB9 /* DDC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DDC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		07F5AEED2484668D00556DB9 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = SOURCE_ROOT; };
+		07F5AEF12484679700556DB9 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		07F5AEF22484679700556DB9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		07F5AEF5248467A200556DB9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		07F5AEF7248467AC00556DB9 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		07F5AEFB2484683400556DB9 /* DDC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DDC.h; path = src/apple/DDC.h; sourceTree = "<group>"; };
+		07F5AF052484690900556DB9 /* DDC.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DDC.cpp; path = src/DDC.cpp; sourceTree = "<group>"; };
+		07F5AF062484690900556DB9 /* DDCFramework.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = DDCFramework.mm; path = src/DDCFramework.mm; sourceTree = "<group>"; };
+		07F5AF092484692F00556DB9 /* DDCFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DDCFramework.h; path = src/DDCFramework.h; sourceTree = "<group>"; };
+		07F5AF0A2484692F00556DB9 /* DDC.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = DDC.hpp; path = src/DDC.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		07F5AEDF248465C100556DB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07F5AEF6248467A200556DB9 /* CoreGraphics.framework in Frameworks */,
+				07F5AEF32484679700556DB9 /* CoreFoundation.framework in Frameworks */,
+				07F5AEF42484679700556DB9 /* Foundation.framework in Frameworks */,
+				07F5AEF8248467AC00556DB9 /* IOKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		07F5AED8248465C000556DB9 = {
+			isa = PBXGroup;
+			children = (
+				07F5AF0A2484692F00556DB9 /* DDC.hpp */,
+				07F5AF092484692F00556DB9 /* DDCFramework.h */,
+				07F5AF052484690900556DB9 /* DDC.cpp */,
+				07F5AF062484690900556DB9 /* DDCFramework.mm */,
+				07F5AEFB2484683400556DB9 /* DDC.h */,
+				07F5AEED2484668D00556DB9 /* src */,
+				07F5AEE3248465C100556DB9 /* Products */,
+				07F5AEF02484679700556DB9 /* Frameworks */,
+			);
+			indentWidth = 2;
+			sourceTree = "<group>";
+			tabWidth = 2;
+		};
+		07F5AEE3248465C100556DB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07F5AEE2248465C100556DB9 /* DDC.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07F5AEF02484679700556DB9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				07F5AEF7248467AC00556DB9 /* IOKit.framework */,
+				07F5AEF5248467A200556DB9 /* CoreGraphics.framework */,
+				07F5AEF12484679700556DB9 /* CoreFoundation.framework */,
+				07F5AEF22484679700556DB9 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		07F5AEDD248465C100556DB9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07F5AEFC2484683400556DB9 /* DDC.h in Headers */,
+				07F5AF0B2484692F00556DB9 /* DDCFramework.h in Headers */,
+				07F5AF0C2484692F00556DB9 /* DDC.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		07F5AEE1248465C100556DB9 /* DDC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07F5AEEA248465C100556DB9 /* Build configuration list for PBXNativeTarget "DDC" */;
+			buildPhases = (
+				07F5AEDD248465C100556DB9 /* Headers */,
+				07F5AEDE248465C100556DB9 /* Sources */,
+				07F5AEDF248465C100556DB9 /* Frameworks */,
+				07F5AEE0248465C100556DB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DDC;
+			productName = DDC;
+			productReference = 07F5AEE2248465C100556DB9 /* DDC.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		07F5AED9248465C000556DB9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1150;
+				ORGANIZATIONNAME = "Jonathan Glanz";
+				TargetAttributes = {
+					07F5AEE1248465C100556DB9 = {
+						CreatedOnToolsVersion = 11.5;
+					};
+				};
+			};
+			buildConfigurationList = 07F5AEDC248465C000556DB9 /* Build configuration list for PBXProject "DDC" */;
+			compatibilityVersion = "Xcode 11.4";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 07F5AED8248465C000556DB9;
+			productRefGroup = 07F5AEE3248465C100556DB9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				07F5AEE1248465C100556DB9 /* DDC */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		07F5AEE0248465C100556DB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		07F5AEDE248465C100556DB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07F5AF072484690900556DB9 /* DDC.cpp in Sources */,
+				07F5AF082484690900556DB9 /* DDCFramework.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		07F5AEE8248465C100556DB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		07F5AEE9248465C100556DB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		07F5AEEB248465C100556DB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = P73K45875K;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/src/apple/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.densebrain.DDC;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		07F5AEEC248465C100556DB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = P73K45875K;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/src/apple/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.densebrain.DDC;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		07F5AEDC248465C000556DB9 /* Build configuration list for PBXProject "DDC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07F5AEE8248465C100556DB9 /* Debug */,
+				07F5AEE9248465C100556DB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07F5AEEA248465C100556DB9 /* Build configuration list for PBXNativeTarget "DDC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07F5AEEB248465C100556DB9 /* Debug */,
+				07F5AEEC248465C100556DB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 07F5AED9248465C000556DB9 /* Project object */;
+}
