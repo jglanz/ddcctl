@@ -20,7 +20,6 @@
 
 /* Begin PBXFileReference section */
 		07F5AEE2248465C100556DB9 /* DDC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DDC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		07F5AEED2484668D00556DB9 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = SOURCE_ROOT; };
 		07F5AEF12484679700556DB9 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		07F5AEF22484679700556DB9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		07F5AEF5248467A200556DB9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -47,7 +46,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		07F5AED8248465C000556DB9 = {
+		07AEBB1724847B4E00909494 /* src */ = {
 			isa = PBXGroup;
 			children = (
 				07F5AF0A2484692F00556DB9 /* DDC.hpp */,
@@ -55,7 +54,14 @@
 				07F5AF052484690900556DB9 /* DDC.cpp */,
 				07F5AF062484690900556DB9 /* DDCFramework.mm */,
 				07F5AEFB2484683400556DB9 /* DDC.h */,
-				07F5AEED2484668D00556DB9 /* src */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		07F5AED8248465C000556DB9 = {
+			isa = PBXGroup;
+			children = (
+				07AEBB1724847B4E00909494 /* src */,
 				07F5AEE3248465C100556DB9 /* Products */,
 				07F5AEF02484679700556DB9 /* Frameworks */,
 			);

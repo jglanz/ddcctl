@@ -28,7 +28,14 @@ protected:
 @end
 
 @implementation DDCWriteCommand
-
+- (instancetype)initWithCommand: (UInt8) command andValue: (UInt) value {
+self = [super init];
+if (self) {
+  self.controlId = command;
+  self.newValue = value;
+}
+  return self;
+}
 @end
 
 @implementation DDCDisplay
