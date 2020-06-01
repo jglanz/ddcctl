@@ -24,14 +24,21 @@ protected:
 
 
 @implementation DDCReadCommand
+- (instancetype)initWithControlId:(UInt8)controlId {
+    self = [super init];
+    if (self) {
+    self.controlId = controlId;
+  }
+  return self;
+}
 
 @end
 
 @implementation DDCWriteCommand
-- (instancetype)initWithCommand: (UInt8) command andValue: (UInt) value {
+- (instancetype)initWithControlId:(UInt8)controlId andValue: (UInt) value {
 self = [super init];
 if (self) {
-  self.controlId = command;
+  self.controlId = controlId;
   self.newValue = value;
 }
   return self;
@@ -39,10 +46,37 @@ if (self) {
 @end
 
 @implementation DDCDisplay
+- (Boolean)write:(DDCWriteCommand *)cmd {
+  return [DDCManager.shared write:cmd for:self];
+}
+
+- (Boolean)read:(DDCReadCommand *)cmd {
+  return [DDCManager.shared read:cmd for:self];
+}
 
 @end
 
+/**
+ * DDC Manager
+ */
 @implementation DDCManager
+
+/**
+ * Singleton reference
+ */
+static DDCManager * sharedInstance = nil;
+
+
++ (DDCManager *)shared {
+  @synchronized (self) {
+    if (!sharedInstance) {
+      sharedInstance = [[DDCManager alloc] init];
+    }
+  }
+  return sharedInstance;
+}
+
+
 - (instancetype)init {
   self = [super init];
   if (self) {

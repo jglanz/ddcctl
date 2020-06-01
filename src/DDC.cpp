@@ -20,7 +20,10 @@
 #define kMaxRequests 10
 #endif
 
-#define kDDCMinReplyDelay 300000
+#ifndef kDDCMinReplyDelay
+#define kDDCMinReplyDelay 30000000
+#endif
+
 //
 //#ifndef kDDCMinReplyDelay
 //// https://github.com/kfix/ddcctl/issues/57
@@ -43,7 +46,7 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
   io_service_t serv{0}, servicePort{0};
   UInt8 index{0};
   kern_return_t err = IOServiceGetMatchingServices(kIOMasterPortDefault, IOServiceMatching(IOFRAMEBUFFER_CONFORMSTO),
-                                                   &iter);
+    &iter);
 
   if (err != KERN_SUCCESS) {
     return;
@@ -53,8 +56,8 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
   while ((serv = IOIteratorNext(iter)) != MACH_PORT_NULL) {
     CFDictionaryRef info;
     io_name_t name;
-    CFIndex vendorId = 0, productId = 0, serialNumber = 0, dependId = 0, dependIndex = 0;
-    CFNumberRef vendorIdRef, productIdRef, serialNumberRef, dependIdRef, dependIndexRef;
+    CFIndex vendorId = 0, productId = 0, serialNumber = 0;
+    CFNumberRef vendorIdRef, productIdRef, serialNumberRef;
     CFStringRef serial = CFSTR(""), productName = CFSTR("");
 
     // get metadata from IOreg node
@@ -65,12 +68,8 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
     IOFBGetI2CInterfaceCount(serv, &busCount);
 
 #ifdef DEBUG
-    CFStringRef location = CFSTR("");
-#endif
-    Boolean success = 0;
+//    CFStringRef location = CFSTR("");
 
-
-#ifdef DEBUG
     /* When assigning a display ID, Quartz considers the following parameters:Vendor, Model, Serial Number and Position in the I/O Kit registry */
     // http://opensource.apple.com//source/IOGraphics/IOGraphics-179.2/IOGraphicsFamily/IOKit/graphics/IOGraphicsTypes.h
 //    CFStringRef locationRef = CFDictionaryGetValue(info, CFSTR(kIODisplayLocationKey));
@@ -82,8 +81,9 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
 //        CFNumberGetValue(dependIndexRef, kCFNumberCFIndexType, &dependIndex);
 #endif
 
+    Boolean success = 0;
     auto productNameDict = static_cast<CFDictionaryRef>(CFDictionaryGetValue(info,
-                                                                             CFSTR(kDisplayProductName)));
+      CFSTR(kDisplayProductName)));
     auto productNameRef = static_cast<CFStringRef>(CFDictionaryGetValue(productNameDict, CFSTR("en_US")));
     if (productNameRef) {
       productName = CFStringCreateCopy(NULL, productNameRef);
@@ -115,8 +115,15 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
     if (CFDictionaryGetValueIfPresent(info, CFSTR(kDisplaySerialNumber), (const void **) &serialNumberRef))
       CFNumberGetValue(serialNumberRef, kCFNumberCFIndexType, &serialNumber);
 
-    std::string productNameStr = CFStringGetCStringPtr(productName, kCFStringEncodingUTF8);
-    DisplayInfo displayInfo(productNameStr, serialNumber, vendorId, productId, index);
+    auto productNameChars = CFStringGetCStringPtr(productName, kCFStringEncodingUTF8);
+    std::string productNameStr(productNameChars, strlen(productNameChars));
+    DisplayInfo displayInfo(
+      productNameStr,
+      static_cast<UInt32>(serialNumber),
+      static_cast<UInt32>(vendorId),
+      static_cast<UInt32>(productId),
+      index
+    );
 #ifdef DEBUG
     // considering this IOFramebuffer as the match for the CGDisplay, dump out its information
     // compare with `make displaylist`
@@ -184,7 +191,7 @@ static io_service_t IOFrameBufferPortFromCGDisplayID(CGDirectDisplayID displayID
   io_service_t serv, servicePort = 0;
 
   kern_return_t err = IOServiceGetMatchingServices(kIOMasterPortDefault, IOServiceMatching(IOFRAMEBUFFER_CONFORMSTO),
-                                                   &iter);
+    &iter);
 
   if (err != KERN_SUCCESS)
     return 0;
@@ -240,8 +247,8 @@ static io_service_t IOFrameBufferPortFromCGDisplayID(CGDirectDisplayID displayID
 
     // compare IOreg's metadata to CGDisplay's metadata to infer if the IOReg's I2C monitor is the display for the given NSScreen.displayID
     if (CGDisplayVendorNumber(displayID) != (UInt32) vendorID ||
-        CGDisplayModelNumber(displayID) != (UInt32) productID ||
-        CGDisplaySerialNumber(displayID) !=
+      CGDisplayModelNumber(displayID) != (UInt32) productID ||
+      CGDisplaySerialNumber(displayID) !=
         (UInt32) serialNumber) // SN is zero in lots of cases, so duplicate-monitors can confuse us :-/
     {
       CFRelease(info);
@@ -423,13 +430,13 @@ bool DDC::DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
         data[2] = 0x01;
         data[3] = read->controlId;
         data[4] = 0x6E ^ data[0] ^ data[1] ^ data[2] ^ data[3];
-#ifdef TT_SIMPLE
-        request.replyTransactionType    = kIOI2CSimpleTransactionType;
-#elif defined TT_DDC
-        request.replyTransactionType    = kIOI2CDDCciReplyTransactionType;
-#else
-//    request.replyTransactionType = SupportedTransactionType();
-#endif
+//#ifdef TT_SIMPLE
+//        request.replyTransactionType    = kIOI2CSimpleTransactionType;
+//#elif defined TT_DDC
+//        request.replyTransactionType    = kIOI2CDDCciReplyTransactionType;
+//#else
+//    request.replyTransactionType = SupportedTransactionType(it,port);
+//#endif
 //    request.replyAddress = 0x6F;
 //    request.replySubAddress = 0x51;
 //
@@ -438,12 +445,12 @@ bool DDC::DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
 
         result = DisplayRequest(display, port, &request);
         result = (result && reply_data[0] == request.sendAddress && reply_data[2] == 0x2 &&
-                  reply_data[4] == read->controlId && reply_data[10] ==
-                                                      (request.replyAddress ^ request.replySubAddress ^
-                                                       reply_data[1] ^
-                                                       reply_data[2] ^ reply_data[3] ^ reply_data[4] ^ reply_data[5] ^
-                                                       reply_data[6] ^ reply_data[7] ^ reply_data[8] ^
-                                                       reply_data[9]));
+          reply_data[4] == read->controlId && reply_data[10] ==
+          (request.replyAddress ^ request.replySubAddress ^
+            reply_data[1] ^
+            reply_data[2] ^ reply_data[3] ^ reply_data[4] ^ reply_data[5] ^
+            reply_data[6] ^ reply_data[7] ^ reply_data[8] ^
+            reply_data[9]));
 
         if (result) { // checksum is ok
           if (i > 1) {
@@ -495,13 +502,12 @@ UInt32 DDC::SupportedTransactionType(const DisplayInfo &it, io_service_t port) {
     --SamanVDR 2016
   */
 
-  bool executed = false;
   kern_return_t kr;
   io_iterator_t io_objects;
   io_service_t io_service;
 //
   kr = IOServiceGetMatchingServices(kIOMasterPortDefault,
-                                    IOServiceNameMatching("IOFramebufferI2CInterface"), &io_objects);
+    IOServiceNameMatching("IOFramebufferI2CInterface"), &io_objects);
 //
   if (kr != KERN_SUCCESS) {
     printf("E: Fatal - No matching service! \n");
@@ -530,51 +536,51 @@ UInt32 DDC::SupportedTransactionType(const DisplayInfo &it, io_service_t port) {
        Combined and DisplayPortNative are not useful in our case.
        */
       if (types) {
-#ifdef DEBUG
-        printf("\nD: IOI2CTransactionTypes: 0x%02lx (%ld)\n", types, types);
-
-        // kIOI2CNoTransactionType = 0
-        if ( 0 == ((1 << kIOI2CNoTransactionType) & (UInt64)types)) {
-            printf("E: IOI2CNoTransactionType                   unsupported \n");
-        } else {
-            printf("D: IOI2CNoTransactionType                   supported \n");
-            supportedType = kIOI2CNoTransactionType;
-        }
-
-        // kIOI2CSimpleTransactionType = 1
-        if ( 0 == ((1 << kIOI2CSimpleTransactionType) & (UInt64)types)) {
-            printf("E: IOI2CSimpleTransactionType               unsupported \n");
-        } else {
-            printf("D: IOI2CSimpleTransactionType               supported \n");
-            supportedType = kIOI2CSimpleTransactionType;
-        }
-
-        // kIOI2CDDCciReplyTransactionType = 2
-        if ( 0 == ((1 << kIOI2CDDCciReplyTransactionType) & (UInt64)types)) {
-            printf("E: IOI2CDDCciReplyTransactionType           unsupported \n");
-        } else {
-            printf("D: IOI2CDDCciReplyTransactionType           supported \n");
-            supportedType = kIOI2CDDCciReplyTransactionType;
-        }
-
-        // kIOI2CCombinedTransactionType = 3
-        if ( 0 == ((1 << kIOI2CCombinedTransactionType) & (UInt64)types)) {
-            printf("E: IOI2CCombinedTransactionType             unsupported \n");
-        } else {
-            printf("D: IOI2CCombinedTransactionType             supported \n");
-            //supportedType = kIOI2CCombinedTransactionType;
-        }
-
-        // kIOI2CDisplayPortNativeTransactionType = 4
-        if ( 0 == ((1 << kIOI2CDisplayPortNativeTransactionType) & (UInt64)types)) {
-            printf("E: IOI2CDisplayPortNativeTransactionType    unsupported\n");
-        } else {
-            printf("D: IOI2CDisplayPortNativeTransactionType    supported \n");
-            //supportedType = kIOI2CDisplayPortNativeTransactionType;
-            // http://hackipedia.org/Hardware/video/connectors/DisplayPort/VESA%20DisplayPort%20Standard%20v1.1a.pdf
-            // http://www.electronic-products-design.com/geek-area/displays/display-port
-        }
-#else
+//#ifdef DEBUG
+//        printf("\nD: IOI2CTransactionTypes: 0x%02lx (%ld)\n", types, types);
+//
+//        // kIOI2CNoTransactionType = 0
+//        if (0 == ((1 << kIOI2CNoTransactionType) & (UInt64) types)) {
+//          printf("E: IOI2CNoTransactionType                   unsupported \n");
+//        } else {
+//          printf("D: IOI2CNoTransactionType                   supported \n");
+//          supportedType = kIOI2CNoTransactionType;
+//        }
+//
+//        // kIOI2CSimpleTransactionType = 1
+//        if (0 == ((1 << kIOI2CSimpleTransactionType) & (UInt64) types)) {
+//          printf("E: IOI2CSimpleTransactionType               unsupported \n");
+//        } else {
+//          printf("D: IOI2CSimpleTransactionType               supported \n");
+//          supportedType = kIOI2CSimpleTransactionType;
+//        }
+//
+//        // kIOI2CDDCciReplyTransactionType = 2
+//        if (0 == ((1 << kIOI2CDDCciReplyTransactionType) & (UInt64) types)) {
+//          printf("E: IOI2CDDCciReplyTransactionType           unsupported \n");
+//        } else {
+//          printf("D: IOI2CDDCciReplyTransactionType           supported \n");
+//          supportedType = kIOI2CDDCciReplyTransactionType;
+//        }
+//
+//        // kIOI2CCombinedTransactionType = 3
+//        if (0 == ((1 << kIOI2CCombinedTransactionType) & (UInt64) types)) {
+//          printf("E: IOI2CCombinedTransactionType             unsupported \n");
+//        } else {
+//          printf("D: IOI2CCombinedTransactionType             supported \n");
+//          //supportedType = kIOI2CCombinedTransactionType;
+//        }
+//
+//        // kIOI2CDisplayPortNativeTransactionType = 4
+//        if (0 == ((1 << kIOI2CDisplayPortNativeTransactionType) & (UInt64) types)) {
+//          printf("E: IOI2CDisplayPortNativeTransactionType    unsupported\n");
+//        } else {
+//          printf("D: IOI2CDisplayPortNativeTransactionType    supported \n");
+//          //supportedType = kIOI2CDisplayPortNativeTransactionType;
+//          // http://hackipedia.org/Hardware/video/connectors/DisplayPort/VESA%20DisplayPort%20Standard%20v1.1a.pdf
+//          // http://www.electronic-products-design.com/geek-area/displays/display-port
+//        }
+//#else
         // kIOI2CSimpleTransactionType = 1
         if (0 != ((1 << kIOI2CSimpleTransactionType) & (UInt64) types)) {
           supportedType = kIOI2CSimpleTransactionType;
@@ -584,7 +590,7 @@ UInt32 DDC::SupportedTransactionType(const DisplayInfo &it, io_service_t port) {
         if (0 != ((1 << kIOI2CDDCciReplyTransactionType) & (UInt64) types)) {
           supportedType = kIOI2CDDCciReplyTransactionType;
         }
-#endif
+//#endif
       } else printf("E: Fatal - No supported Transaction Types! \n");
 
       CFRelease(portProps);
