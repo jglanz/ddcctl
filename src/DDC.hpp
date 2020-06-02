@@ -19,7 +19,7 @@
 #include <map>
 #include <vector>
 #include <functional>
-#include "DDCControlIds.h"
+
 
 #define DISPLAY_OPT "display"
 #define BRIGHTNESS_OPT "brightness"
@@ -59,11 +59,12 @@ namespace DDC {
 
   class DisplayInfo {
   public:
-    std::string name{""};
+    std::string name {};
     UInt32 serial{0};
     UInt32 vendorId{0};
     UInt32 productId{0};
     UInt32 index{0};
+    bool supported {false};
 
     DisplayInfo() = default;
 
@@ -72,7 +73,8 @@ namespace DDC {
       UInt32 serial,
       UInt32 vendorId,
       UInt32 productId,
-      UInt32 index
+      UInt32 index,
+      bool supported
     );
 
     virtual ~DisplayInfo() = default;

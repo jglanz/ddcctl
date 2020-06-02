@@ -1,13 +1,13 @@
 
 #pragma once
 
+//#if defined(__cplusplus)
+//extern "C" {
+//#endif
+  
 
-#if defined(APPLE) && !defined(__cplusplus)
-#import <Foundation/Foundation.h>
-typedef NS_OPTIONS(UInt8, DDCControl) {
-#else
-  enum DDCControl {
-#endif
+enum DDCControlId {
+
   RESET = 0x04,
   RESET_BRIGHTNESS_AND_CONTRAST = 0x05,
   RESET_GEOMETRY = 0x06,

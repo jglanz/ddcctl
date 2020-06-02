@@ -15,6 +15,7 @@
 #define APPLE
 #endif
 
+#include "../DDCControlIds.h"
 #include "../DDC.hpp"
 
 
@@ -63,6 +64,8 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
     CFDictionaryRef info;
     io_name_t name;
     CFIndex vendorId = 0, productId = 0, serialNumber = 0;
+    CFBooleanRef isHdmiRef;
+    Boolean isHdmi = false;
     CFNumberRef vendorIdRef, productIdRef, serialNumberRef;
     CFStringRef serial = CFSTR(""), productName = CFSTR("");
 
@@ -118,6 +121,10 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
     // if (framebuffer.hasDDCConnect(0)) // https://developer.apple.com/reference/kernel/ioframebuffer/1813510-hasddcconnect?language=objc
     // kAppleDisplayTypeKey -- if this is an Apple display, can use IODisplay func to change brightness: http://stackoverflow.com/a/32691700/3878712
 
+    if (CFDictionaryGetValueIfPresent(info, CFSTR("IODisplayIsHDMISink"), (const void **) &isHdmiRef)) {
+      isHdmi = CFBooleanGetValue(isHdmiRef);
+    }
+
     if (CFDictionaryGetValueIfPresent(info, CFSTR(kDisplaySerialNumber), (const void **) &serialNumberRef))
       CFNumberGetValue(serialNumberRef, kCFNumberCFIndexType, &serialNumber);
 
@@ -128,7 +135,8 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
       static_cast<UInt32>(serialNumber),
       static_cast<UInt32>(vendorId),
       static_cast<UInt32>(productId),
-      index
+      index,
+      !isHdmi
     );
 #ifdef DEBUG
     // considering this IOFramebuffer as the match for the CGDisplay, dump out its information
@@ -143,6 +151,12 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
 #endif
     servicePort = serv;
     CFRelease(info);
+
+    if (isHdmi) {
+#ifdef DEBUG
+      printf("W: HDMI sink not supported\n");
+#endif
+    }
 
     index++;
 
@@ -177,13 +191,15 @@ DDC::DisplayInfo::DisplayInfo(
   UInt32 serial,
   UInt32 vendorId,
   UInt32 productId,
-  UInt32 index
+  UInt32 index,
+  bool supported
 ) :
   name(std::move(name)),
   serial(serial),
   vendorId(vendorId),
   productId(productId),
-  index(index) {
+  index(index),
+  supported(supported) {
 };
 
 /*
@@ -302,6 +318,9 @@ static dispatch_semaphore_t DisplayQueue(const DisplayInfo &display) {
 }
 
 static bool DisplayRequest(const DisplayInfo &display, io_service_t &frameBuffer, IOI2CRequest *request) {
+  if (!display.supported) {
+    return false;
+  }
   dispatch_semaphore_t queue = DisplayQueue(display);
   dispatch_semaphore_wait(queue, DISPATCH_TIME_FOREVER);
   bool result = false;
@@ -339,6 +358,10 @@ static bool DisplayRequest(const DisplayInfo &display, io_service_t &frameBuffer
 
 bool DDC::DDCWrite(const DisplayInfo &display, struct DDCWriteCommand *write) {
   //, io_service_t framebuffer
+  if (!display.supported) {
+    return false;
+  }
+
   bool executed = false;
   bool result = false;
   auto callback = [&](const DisplayInfo &it, io_service_t port) -> bool {
@@ -385,12 +408,19 @@ bool DDC::DDCWrite(const DisplayInfo &display, struct DDCWriteCommand *write) {
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
 
 bool DDC::DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
-
+  if (!display.supported) {
+    return false;
+  }
 
   bool executed = false;
 
   auto callback = [&](const DisplayInfo &it, io_service_t port) -> bool {
+
     if (it.index == display.index) {
+      if (!it.supported) {
+        return false;
+      }
+
       UInt8 reply_data[11] = {};
       bool result = false;
       UInt8 data[128];
@@ -398,8 +428,10 @@ bool DDC::DDCRead(const DisplayInfo &display, struct DDCReadCommand *read) {
       for (int i = 1; i <= kMaxRequests; i++) {
 //    bzero(&request, sizeof(request));
         IOI2CRequest request{
+          //.sendTransactionType = kIOI2CNoTransactionType,
           .sendTransactionType = kIOI2CSimpleTransactionType,
-          //.replyTransactionType = kIOI2CDDCciReplyTransactionType,
+//          .replyTransactionType = kIOI2CDDCciReplyTransactionType,
+          //.replyTransactionType = kIOI2CNoTransactionType,
           .replyTransactionType = SupportedTransactionType(it, port),
           .sendAddress = 0x6e,
           .replyAddress = 0x6F,

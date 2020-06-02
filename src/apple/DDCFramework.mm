@@ -1,8 +1,6 @@
 
-#import <DDCControlIds.h>
 #import "DDCFramework.h"
 #import "DDC.hpp"
-#import "DDCControlIds.h"
 
 //#pragma clang diagnostic push
 //#pragma clang diagnostic ignored "-Wshadow-ivar"
@@ -112,6 +110,7 @@ static DDCManager * sharedInstance = nil;
     display.vendorId = info.vendorId;
     display.productId = info.productId;
     display.serial = info.serial;
+    display.supported = info.supported;
     [displays addObject: display];
   }
 

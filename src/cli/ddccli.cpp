@@ -48,7 +48,7 @@ static void executeDDCAction(const Displays &displays, const DDCAction &action) 
         printf("E: Failed to send DDC command!\n");
       } else {
         printf("D: getting VCP control #%u => %u,%u\n", command.controlId, command.currentValue,
-               command.maxValue);
+          command.maxValue);
       }
     } else {
       struct DDCWriteCommand command{
@@ -100,9 +100,9 @@ int main(int argc, char **argv) {
   cxxopts::Options options("ddcctl", "DDC/CI Monitor Control");
   options.add_options("common")
     ("d," DISPLAY_OPT, "Display number", cxxopts::value<int>()->default_value("-1"))
-  (CONTRAST_OPT, "Contrast", cxxopts::value<string>()->implicit_value("-1"))
-    (BRIGHTNESS_OPT, "Brightness", cxxopts::value<string>()->implicit_value("-1"))
-    (INPUT_SOURCE_OPT, "Input Source", cxxopts::value<string>()->implicit_value("-1"))
+    ("c," CONTRAST_OPT, "Contrast", cxxopts::value<string>()->implicit_value("-1"))
+    ("b," BRIGHTNESS_OPT, "Brightness", cxxopts::value<string>()->implicit_value("-1"))
+    ("s," INPUT_SOURCE_OPT, "Input Source", cxxopts::value<string>()->implicit_value("-1"))
     ("h,help", "Print usage");
 //    ("w,write", "Write Mode", cxxopts::value<bool>()->default_value("false"));
 
