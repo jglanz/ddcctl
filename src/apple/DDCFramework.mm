@@ -1,6 +1,8 @@
 
+#import <DDCControlIds.h>
 #import "DDCFramework.h"
 #import "DDC.hpp"
+#import "DDCControlIds.h"
 
 //#pragma clang diagnostic push
 //#pragma clang diagnostic ignored "-Wshadow-ivar"
@@ -35,6 +37,15 @@ protected:
 @end
 
 @implementation DDCWriteCommand
+- (instancetype)initWithControl:(DDCControl)control andValue:(UInt)value {
+  self = [super init];
+  if (self) {
+    self.controlId = control;
+    self.newValue = value;
+  }
+  return self;
+}
+
 - (instancetype)initWithControlId:(UInt8)controlId andValue: (UInt) value {
 self = [super init];
 if (self) {

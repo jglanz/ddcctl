@@ -11,7 +11,13 @@
 #include <utility>
 #include <map>
 
-#include "DDC.hpp"
+#ifndef APPLE
+#define APPLE
+#endif
+
+#include "../DDC.hpp"
+
+
 //#include <IOKit/IOGraphicsLib.h>
 #include <ApplicationServices/ApplicationServices.h>
 

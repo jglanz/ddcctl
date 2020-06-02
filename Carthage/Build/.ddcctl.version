@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+    {
+      "name" : "ddc",
+      "hash" : "69285d3f16c36bca6952fa08e70969ec6b55b61bb42f1f9bbdcda37a65fcf82f"
+    }
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "33c5ce2ef62344588d7e5863d7691e6304207ab9",
+  "iOS" : [
+
+  ]
+}

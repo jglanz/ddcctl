@@ -20,9 +20,9 @@ Install
 
 Usage
 ----
-Run `ddcctl -h` for some options.  
-[ddcctl.sh](/ddcctl.sh) is a script I use to control two PC monitors plugged into my Mac Mini.  
-You can point Alfred, ControlPlane, or Karabiner at it to quickly switch presets.  
+Run `ddcctl -h` for some options.
+[ddcctl.sh](/bin/ddcctl.sh) is a script I use to control two PC monitors plugged into my Mac Mini.  
+You can point `Alfred`, `ControlPlane`, or `Karabiner` at it to quickly switch presets.
 
 Input Sources
 ----
