@@ -3,3 +3,4 @@ ddcctl
 *.o
 /build
 jglanz.xcuserdata*
+Carthage
