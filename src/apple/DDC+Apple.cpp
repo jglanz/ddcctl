@@ -93,11 +93,13 @@ void DDC::forEachServicePort(const DisplayInfoCallback &callback) {
     Boolean success = 0;
     auto productNameDict = static_cast<CFDictionaryRef>(CFDictionaryGetValue(info,
       CFSTR(kDisplayProductName)));
-    auto productNameRef = static_cast<CFStringRef>(CFDictionaryGetValue(productNameDict, CFSTR("en_US")));
-    if (productNameRef) {
-      productName = CFStringCreateCopy(NULL, productNameRef);
+    if (productNameDict) {
+      auto productNameRef = static_cast<CFStringRef>(CFDictionaryGetValue(productNameDict, CFSTR("en_US")));
+      if (productNameRef) {
+        productName = CFStringCreateCopy(NULL, productNameRef);
+      }
     }
-
+    
     auto serialRef = static_cast<CFStringRef>(CFDictionaryGetValue(info, CFSTR(kDisplaySerialString)));
     if (serialRef) {
       serial = CFStringCreateCopy(NULL, serialRef);
